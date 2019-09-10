@@ -1,105 +1,73 @@
-* {
-  margin: 0;
-  padding: 0;
+/* css reset */
+*{
+  margin: 0; padding: 0; box-sizing: border-box;
 }
-
-ul{
+ul,ol{
   list-style: none;
 }
-
-body {
-  width: 100%;
-  background: url(img/back.jpg) no-repeat;
-  overflow: hidden;
-  transition: all 1s;
+a{
+  text-decoration: none;
+}
+img{
+  max-width: 100%;
 }
 
-/* @keyframes up{
-  0%{transform: scale(1) translateY(0);}
-  50%{transform: scale(1) translateY(-120px);}
-  100%{transform: scale(1) translateY(0);}
-} */
+/* page style */
+body{
+  background: url("img/bg.jpg") no-repeat;
+}
 
-ul.player {
-  height: 50vh;
+.playerWrapper{
+  color: #fff;
+}
+
+.playerWrapper i{
+  font-size: 56px;
+}
+
+@media (max-width: 420px){
+  .playerWrapper i{
+    font-size: 42px;
+  }
+}
+
+.playerWrapper i.icontimeout,
+.playerWrapper i.iconplay{
+  font-size: 72px;
+}
+
+@media (max-width: 420px){
+  .playerWrapper i.icontimeout,
+  .playerWrapper i.iconplay{
+    font-size: 56px;
+  }
+}
+
+.playerWrapper > ul{
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-ul.player li{
-  margin: 0 5px;
+.playerWrapper > ul > li{
+  padding: 5px;
 }
 
-ul.player li img.btn{
-  max-width: 60px;
-  cursor: pointer;
-}
-
-ul.game {
-  height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 @media (max-width: 420px){
-  ul.game { 
-    flex-direction: column;
+  .playerWrapper > ul > li{
+    padding: 2px;
   }
 }
 
-ul.game li{
-  max-width: 300px;
-  max-height: 300px;
-  margin: 50px;
-  overflow: hidden;
-}
-@media (max-width: 420px){
-  ul.game li{ 
-    max-width: 100px;
-    max-height: 100px;
-  }
-}
-ul.game li:nth-child(1) img,
-ul.game li:nth-child(3) img{
-  width: 300px;
-}
-ul.game li:nth-child(2) img{
-  height: 300px;
-}
-/* ul.game li img.static{
-  -webkit-filter: blur(2px);
-} */
-ul.game li img.gif{
-  position: relative;
-  display: none;
-}
-ul.game li:nth-child(1) img.gif{
-  top: -100px;
-}
-ul.game li:nth-child(2) img.gif{
-  top: 0;
-  left: -90px;
-}
-ul.game li:nth-child(3) img.gif{
-  top: 0;
-}
-ul.game li a:hover img.gif{
-  display: block;
-}
-ul.game li a:hover img.static{
-  display: none;
+.circleAnime{
+  animation: circle 5s infinite;
 }
 
-/* img#btnMusic{
-  animation: btnRotate 1.5s linear infinite;
-} */
-
-@keyframes btnRotate{
+@keyframes circle{
   0%{
-      transform: rotate(0deg);
-  }
-  100%{
-      transform: rotate(360deg);
+    transform: rotate(0deg);
+  } 100%{
+    transform: rotate(360deg);
   }
 }

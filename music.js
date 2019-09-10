@@ -1,95 +1,103 @@
-var playIndex = 1;
-var currentTm = 0;
-var playMode = "loop";
-
 function $(selector) {
   return document.querySelector(selector);
 }
 
-const btnMusic = $("#btnMusic");
-const btnPrevious = $("#btnPrevious");
-const btnPlay = $("#btnPlay");
-const btnNext = $("#btnNext");
-const btnMode = $("#btnMode");
-const music = $("#music");
-
-btnPlay.onclick = function () {
-  //music.paused
-  if (music.paused == true) {
-    playMusic(playIndex, currentTm);
-  } else {
-    pauseMusic();
-  }
+function addClass(ele, className) {
+  ele.classList.add(className);
 }
 
-btnNext.onclick = function () {
+function removeClass(ele, className) {
+  ele.classList.remove(className);
+}
+
+const logo = $(".iconmusic");
+const prevBtn = $(".iconprevious");
+const playBtn = $(".icontimeout");
+const nextBtn = $(".iconnextsong");
+const modeBtn = $(".iconloop");
+const music = $("audio");
+
+var index = 1;
+var timePtr = 0;
+var mode = "loop";
+
+prevBtn.addEventListener("click", function () {
+  playPrev();
+});
+
+playBtn.addEventListener("click", function () {
+  playPause();
+});
+
+nextBtn.addEventListener("click", function () {
   playNext();
-}
+});
 
-btnPrevious.onclick = function () {
-  playPrevious();
-}
-
-btnMode.onclick = function () {
-  if(playMode == "loop"){
-    changeMode("single");
-    changeIcon(btnMode, "ico/singlecycle.png");
-  } else if(playMode == "single"){
-    changeMode("random");
-    changeIcon(btnMode, "ico/random.png");
+modeBtn.addEventListener("click", function () {
+  if (mode == "loop") {
+    mode = "single";
+    removeClass(modeBtn, "iconloop");
+    addClass(modeBtn, "iconsinglecycle");
+  } else if (mode == "single") {
+    mode = "random";
+    removeClass(modeBtn, "iconsinglecycle");
+    addClass(modeBtn, "iconrandom");
   } else {
-    changeMode("loop");
-    changeIcon(btnMode, "ico/loop.png");
+    mode = "loop";
+    removeClass(modeBtn, "iconrandom");
+    addClass(modeBtn, "iconloop");
+  }
+});
+
+function playPause() {
+  if (music.paused) {
+    play();
+  } else {
+    pause();
   }
 }
-//play
-function playMusic(index, time) {
-  music.loop = playMode == "single" ? true : false;
+
+function play() {
+  music.loop = mode == "single" ? true : false;
   music.src = "music/" + index + ".mp3";
-  //load player time while pausing
-  music.currentTime = time;
-  console.log(index);
-  console.log(music.src);
+  music.currentTime = timePtr;
   music.play();
-  //play next song while ending
-  music.addEventListener("ended",function(){
+  removeClass(playBtn, "icontimeout");
+  addClass(playBtn, "iconplay");
+  addClass(logo, "circleAnime");
+  music.addEventListener("ended", function(){
     playNext();
   });
-  btnMusic.style.animation = "btnRotate 1.5s linear infinite";
-  //change btn icon
-  changeIcon(btnPlay, "ico/pause.png");
 }
-//pause
-function pauseMusic() {
-  //save player time while pausing
-  currentTm = music.currentTime;
+
+function pause() {
+  timePtr = music.currentTime;
   music.pause();
-  btnMusic.style.animation = "";
-  changeIcon(btnPlay, "ico/play.png");
-}
-//next
-function playNext(){
-  if (playMode == "random") {
-    playIndex = Math.floor(Math.random() * 10 + 1);
-  } else {
-    playIndex = playIndex >= 10 ? 1 : (playIndex + 1);
-  }
-  playMusic(playIndex, 0);
-}
-//prev
-function playPrevious(){
-  if (playMode == "random") {
-    playIndex = Math.floor(Math.random() * 10 + 1);
-  } else {
-    playIndex = playIndex <= 1 ? 10 : (playIndex - 1);
-  }
-  playMusic(playIndex, 0);
+  addClass(playBtn, "icontimeout");
+  removeClass(playBtn, "iconplay");
+  removeClass(logo, "circleAnime");
 }
 
-function changeMode(mode) {
-  playMode = mode;
+function playNext() {
+  if (mode == "random") {
+    index = rand();
+  } else {
+    index = index >= 10 ? 1 : (index + 1);
+  }
+  timePtr = 0;
+  play();
 }
 
-function changeIcon(ele, url){
-  ele.src = url;
+function playPrev() {
+  if (mode == "random") {
+    index = rand();
+  } else {
+    index = index <= 1 ? 10 : (index - 1);
+  }
+  timePtr = 0;
+  play();
+}
+
+function rand() {
+  return Math.ceil(Math.random() * 10);
 }
